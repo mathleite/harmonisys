@@ -6,7 +6,6 @@ class Note implements NoteInterface
 {
     public function __construct(private string $noteName)
     {
-        $this->noteName = strtolower($this->noteName);
         if (!$this->validate()) {
             throw new \InvalidArgumentException('Invalid note!');
         }
@@ -14,11 +13,29 @@ class Note implements NoteInterface
 
     private function validate(): bool
     {
-        return in_array($this->noteName, NoteService::getAllNotes());
+        return in_array(strtolower($this->noteName), $this->getAllValidNotes());
     }
 
-    public function getNoteName(): string
+    public function getName(): string
     {
-        return $this->noteName;
+        return ucfirst($this->noteName);
+    }
+
+    private function getAllValidNotes(): array
+    {
+        return [
+            'c',
+            'c#',
+            'd',
+            'd#',
+            'e',
+            'f',
+            'f#',
+            'g',
+            'g#',
+            'a',
+            'a#',
+            'b'
+        ];
     }
 }

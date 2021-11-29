@@ -2,6 +2,7 @@
 
 namespace Mathleite\Harmonisys\factory;
 
+use Mathleite\Harmonisys\note\NoteCollection;
 use Mathleite\Harmonisys\note\NoteInterface;
 use Mathleite\Harmonisys\note\NoteService;
 use Mathleite\Harmonisys\utils\Logger;
@@ -12,14 +13,14 @@ class ScaleFactory
 
     public static function execute(NoteInterface $note)
     {
-        $rootNoteIndex = array_search($note->getNoteName(), NoteService::getAllNotes());
-        return self::buildScale($rootNoteIndex);
+        $noteCollection = NoteService::getAllNotes();
+        $rootNoteIndex = $noteCollection->search($note->getName());
+        return self::buildScale($rootNoteIndex, $noteCollection);
     }
 
-    private static function buildScale(string $rootNote): array
+    private static function buildScale(string $rootNote, NoteCollection $collection): array
     {
         $scaleFormatInArray = str_split(self::SCALE_FORMAT);
-        $notes = NoteService::getAllNotes();
         $scaleStructure = [];
 
         foreach ($scaleFormatInArray as $index => $pattern) {
@@ -28,34 +29,34 @@ class ScaleFactory
             }
 
             if ($index === 0) {
-                $scaleStructure[] = $notes[$rootNote];
+                $scaleStructure[] = $collection->get($rootNote);
             }
 
             $patternInScale = $pattern === 't'
                 ? 2
                 : 1;
             $lastNoteInScale = $scaleStructure[count($scaleStructure) - 1];
-            $scaleLength = count($notes) - 1;
 
-            if (key_exists(
+            $scaleLength = $collection->count() - 1;
+
+            if ($collection->keyExists(
                 $nextToneNotePosition = (
-                    ($lastNotePosition = array_search($lastNoteInScale, $notes)) + $patternInScale
-                ),
-                $notes
+                    ($lastNotePosition = $collection->search($lastNoteInScale->getName())) + $patternInScale
+                )
             )) {
-                $scaleStructure[] = $notes[$nextToneNotePosition];
+                $scaleStructure[] = $collection->get($nextToneNotePosition);
                 continue;
             }
 
             $remainingNotes = $scaleLength - $lastNotePosition;
 
             if ($remainingNotes !== 0) {
-                $scaleStructure[] = $notes[($remainingNotes - $patternInScale) * -1];
+                $scaleStructure[] = $collection->get(($remainingNotes - $patternInScale) * -1);
                 continue;
             }
 
-            $scaleStructure[] = $notes[$patternInScale - 1];
-            Logger::info($scaleStructure, false);
+            $scaleStructure[] = $collection->get($patternInScale - 1);
+            Logger::info($scaleStructure, true);
         }
         return $scaleStructure;
     }

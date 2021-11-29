@@ -4,5 +4,5 @@ namespace Mathleite\Harmonisys\note;
 
 interface NoteInterface
 {
-    public function getNoteName(): string;
+    public function getName(): string;
 }
