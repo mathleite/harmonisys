@@ -22,14 +22,13 @@ docker-compose exec php composer install
 
 require_once __DIR__ . '/../bootstrap/index.php';
 
-$notes = \Mathleite\Harmonisys\factory\ScaleFactory::execute(
-    new \Mathleite\Harmonisys\note\Note('A')
+$scale = \Mathleite\Harmonisys\scale\ScaleFactory::execute(
+    (new \Mathleite\Harmonisys\note\Note('A'))
+        ->setIsTiny(false)
+        ->setIsMinor(false)
 );
 
-foreach ($notes as $note) {
-    echo $note->getName() . PHP_EOL;
-}
-
+echo $scale;
 ```
 
 Run
@@ -38,13 +37,15 @@ docker-compose exec php php ./public/index.php
 ```
 Output
 ```
-A
-B
-C#
-D
-E
-F#
-G#
+Scale: A
+Degrees:
+I: A
+II: Bm
+III: C#m
+IV: D
+V: E
+VI: F#m
+VII: G#dim
 ```
 
 See more on [Issue](https://github.com/mathleite/harmonisys/issues) to future updates.

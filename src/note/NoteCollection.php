@@ -9,7 +9,7 @@ class NoteCollection implements \Iterator, NoteCollectionInterface
     /**
      * @param Note[]|array $notes
      */
-    public function __construct(private array $notes)
+    public function __construct(private array $notes = [])
     {
     }
 
@@ -65,5 +65,15 @@ class NoteCollection implements \Iterator, NoteCollectionInterface
     public function keyExists(int $key): bool
     {
         return key_exists($key, $this->notes);
+    }
+
+    public function push(Note $note): void
+    {
+        array_push($this->notes, $note);
+    }
+
+    public function toArray(): array
+    {
+        return iterator_to_array($this);
     }
 }
