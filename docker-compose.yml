@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./:/var/www/harmonisys
+    working_dir: /var/www/harmonisys
+    container_name: php

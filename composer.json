@@ -1,0 +1,17 @@
+{
+    "name": "mathleite/harmonisys",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mathleite\\Harmonisys\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matheus Leite",
+            "email": "matheus.leite.san@gmail.com"
+        }
+    ],
+    "require": {}
+}
