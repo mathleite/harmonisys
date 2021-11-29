@@ -6,9 +6,13 @@ Harmonisys is a `scale builder`, that based on a **note**, it returns all notes 
 This project use docker-compose to setup the application.
 
 ```shell
-~ docker-compose up --build -d
+docker-compose up --build -d
 ```
 
+Composer install
+```shell
+docker-compose exec php composer install
+```
 ### Usage
  Modify *public/index.php* with a Note that you want to build a scale.
 
